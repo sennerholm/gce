@@ -1,0 +1,4 @@
+secrets.tf
+secrets-*
+terraform.tfstate*
+*_override.tf
