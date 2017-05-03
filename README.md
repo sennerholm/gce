@@ -1,27 +1,37 @@
 # gce
 GCE stuff, fabric conf etc
 
-Requirement: Google account
-First, register a new account at google with cour own email
+## Requirements
+
+### Google Account
+First, register a new account at google with your own email
 https://accounts.google.com/SignUpWithoutGmail
 
-Follow 
-https://github.com/kelseyhightower/craft-kubernetes-workshop/blob/master/labs/create-gce-account.md
-To create GCE account (and new user bonus) (Needs visa)
-Creating a project and enable API
+### GCE account
+Follow [these instructions](https://github.com/kelseyhightower/craft-kubernetes-workshop/blob/master/labs/create-gce-account.md)
+to create a new GCE account, this will require your credit card information
+although you will not be billed anything.
+
+Create a new project from thee Google cloud console and enable the [Container Engine](https://console.cloud.google.com/apis/api/container.googleapis.com/overview)
+and the [Compute Engine](https://console.cloud.google.com/apis/api/compute-component.googleapis.com/overview) API.
+
+## Terraform
+
+Make sure you have [terraform installed.](https://www.terraform.io/intro/getting-started/install.html)
 
 Follow: https://www.terraform.io/docs/providers/google/index.html "Authentication JSON File"
 Create a new terraform service account, Editor on your project.
-To get Json file, save it to terraform->secrets-google.json
+To get Json file, save it to `terraform/secrets-google.json`
 
-Copy secrets.tf from terraform/template/samplesecrets.tf and update it with your values.
+Copy `terraform/template/samplesecrets.tf` to `terraform/secrets.tf` and update it with your values.
 
-Go to terraform and run:
+Go to `terraform/` and run:
 
-terraform plan 
-terraform apply
+`terraform plan`
 
-You then have a gce kluster upp and running over 3 failure zones
+`terraform apply`
+
+You then have a gce cluster up and running over 3 failure zones.
 
 # To reach it from command line
 gcloud auth application-default login
