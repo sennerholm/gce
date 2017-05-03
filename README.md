@@ -33,6 +33,13 @@ Go to `terraform/` and run:
 
 You then have a gce cluster up and running over 3 failure zones.
 
-# To reach it from command line
-gcloud auth application-default login
+# To reach the new gcloud environment from command line
 
+From the `terraform/` run:
+
+```
+export GOOGLE_APPLICATION_CREDENTIALS=$PWD/secrets-google.json
+gcloud config set compute/zone europe-west1-b
+gcloud container clusters get-credentials production
+```
+After that it should be possible to run gcloud and kubectl to connect to the new cluster
