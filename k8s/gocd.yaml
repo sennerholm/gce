@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: gocd
+  labels:
+    name: gocd
+spec:
+  replicas: 1
+  selector:
+    name: gocd
+  template:
+    metadata:
+      labels:
+        name: gocd
+    spec:
+      containers:
+      - image: gocd/gocd-server:v17.4.0
+        imagePullPolicy: Always
+        name: gocd-server
+        ports:
+        - containerPort: 8153
+          hostPort: 8153
+          protocol: TCP
+        - containerPort: 8154
+          hostPort: 8154
+          protocol: TCP
+        volumeMounts:
+        - name: production-go-data
+          mountPath: /godata
+        - name: production-go-data-db
+          mountPath: /godata/db
+      - image: ashwanthkumar/gocd-agent:latest
+        imagePullPolicy: Always
+        name: gocd-agent
+        securityContext:
+          privileged: true
+        env:
+        - name: GO_SERVER
+          value: localhost
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+        - name: production-go-data
+          gcePersistentDisk:
+            pdName: production-go-data
+            fsType: ext4
+        - name: production-go-data-db
+          gcePersistentDisk:
+            pdName: production-go-data-db
+            fsType: ext4
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gocd
+  labels:
+    name: gocd
+spec:
+  ports:
+  - name: gocd
+    port: 8154
+    protocol: TCP
+    targetPort: 8154
+  selector:
+    name: gocd
+  sessionAffinity: None
+  type: LoadBalancer
