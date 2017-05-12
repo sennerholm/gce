@@ -33,6 +33,9 @@ Go to `terraform/` and run:
 
 You then have a gce cluster up and running over 3 failure zones.
 
+When you are done with the lab, make sure to run `terraform destroy`
+to shut down the cluster.
+
 # To reach the new gcloud environment from command line
 
 From the `terraform/` run:
@@ -43,3 +46,5 @@ gcloud config set compute/zone europe-west1-b
 gcloud container clusters get-credentials production
 ```
 After that it should be possible to run gcloud and kubectl to connect to the new cluster
+
+
