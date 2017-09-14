@@ -10,6 +10,9 @@
         <jobs>
           <job name="Buildartifact">
             <tasks>
+              <exec command="env">
+                <runif status="passed" />
+              </exec>
               <exec command="bash">
                 <arg>-x</arg>
                 <arg>scripts/build.sh</arg>
@@ -21,7 +24,51 @@
       </stage>
     </pipeline>
   </pipelines>
+  <pipelines group="Todo">
+    <pipeline name="BuiltAndTest" labeltemplate="1.0.${COUNT}" isLocked="false">
+      <environmentvariables>
+        <variable name="IMAGENAME">
+          <value>todo-backend</value>
+        </variable>
+        <variable name="REPOSITORY_PREFIX">
+          <value>eu.gcr.io/mikan-terraform-project6</value>
+        </variable>
+      </environmentvariables>
+      <materials>
+        <git url="https://github.com/mhallendal/node-todo-backend" />
+      </materials>
+      <stage name="Build">
+        <jobs>
+          <job name="BuildArtifact">
+            <tasks>
+              <exec command="bash">
+                <arg>./scripts/buildverify-artifact.sh</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="bash">
+                <arg>./scripts/persist-artifact.sh</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+      <stage name="FastTest">
+        <jobs>
+          <job name="RunTests">
+            <tasks>
+              <exec command="bash">
+                <arg>script/runtests</arg>
+                <arg>--fast</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+    </pipeline>
+  </pipelines>
   <agents>
-
+ 
   </agents>
 </cruise>
